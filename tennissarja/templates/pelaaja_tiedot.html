@@ -16,6 +16,7 @@
                     <th>1.erä</th>
                     <th>2.erä</th>
                     <th>3.erä</th>
+                    <th>Pisteet</th>
                 </tr>
             </thead>
             <tbody>
@@ -24,9 +25,10 @@
                         <td><a href="{{ url_for('player.hae_pelaaja', pelaaja_id=ottelu.vastustaja.id) }}">{{ ottelu.vastustaja.nimi }}</a></td>
                         <td>{{ ottelu.kierros_numero }}</td>
                         <td>{{ ottelu.lohko_numero }}</td>
-                        <td>{{ ottelu.era1 }}</td>
-                        <td>{{ ottelu.era2 }}</td>
-                        <td>{{ ottelu.era3 }}</td>
+                        <td>{{ ottelu.era1_p1 }} - {{ ottelu.era1_p2 }}</td>
+                        <td>{{ ottelu.era2_p1 }} - {{ ottelu.era2_p2 }}</td>
+                        <td>{{ ottelu.era3_p1 }} - {{ ottelu.era3_p2 }}</td>
+                        <td>{{ ottelu.p1_pisteet }} - {{ ottelu.p2_pisteet }}</td>
                     </tr>
                 {% endfor %}
             </tbody>

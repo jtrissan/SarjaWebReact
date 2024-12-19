@@ -11,19 +11,36 @@ def hae_pelaajan_ottelut(pelaaja_id):
     for ottelu in ottelut:
         if ottelu.pelaaja1_id == pelaaja_id:
             vastustaja = hae_pelaajan_tiedot(ottelu.pelaaja2_id)
+            ottelutiedot.append({
+                'vastustaja': vastustaja,
+                'kierros_numero': ottelu.sarjakierros.kierros_numero,
+                'lohko_numero': ottelu.lohko_numero,
+                'era1_p1': ottelu.era1_p1,
+                'era2_p1': ottelu.era2_p1,
+                'era3_p1': ottelu.era3_p1,
+                'era1_p2': ottelu.era1_p2,
+                'era2_p2': ottelu.era2_p2,
+                'era3_p2': ottelu.era3_p2,
+                'p1_pisteet': ottelu.p1_pisteet,
+                'p2_pisteet': ottelu.p2_pisteet,
+                'ottelun_aika': ottelu.ottelun_aika
+            })
         else:
             vastustaja = hae_pelaajan_tiedot(ottelu.pelaaja1_id)
-        ottelutiedot.append({
-            'vastustaja': vastustaja,
-            'kierros_numero': ottelu.sarjakierros.kierros_numero,
-            'lohko_numero': ottelu.lohko_numero,
-            'era1': (ottelu.era1_p1, ottelu.era1_p2),
-            'era2': (ottelu.era2_p1, ottelu.era2_p2),
-            'era3': (ottelu.era3_p1, ottelu.era3_p2),
-            'p1_pisteet': ottelu.p1_pisteet,
-            'p2_pisteet': ottelu.p2_pisteet,
-            'ottelun_aika': ottelu.ottelun_aika
-        })
+            ottelutiedot.append({
+                'vastustaja': vastustaja,
+                'kierros_numero': ottelu.sarjakierros.kierros_numero,
+                'lohko_numero': ottelu.lohko_numero,
+                'era1_p1': ottelu.era1_p2,
+                'era2_p1': ottelu.era2_p2,
+                'era3_p1': ottelu.era3_p2,
+                'era1_p2': ottelu.era1_p1,
+                'era2_p2': ottelu.era2_p1,
+                'era3_p2': ottelu.era3_p1,
+                'p1_pisteet': ottelu.p2_pisteet,
+                'p2_pisteet': ottelu.p1_pisteet,
+                'ottelun_aika': ottelu.ottelun_aika
+            })
     return ottelutiedot
         
 

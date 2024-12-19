@@ -100,7 +100,7 @@ def input():
         LohkojenPelaajat.sarjakierros_id == sarjakierros_id,
         LohkojenPelaajat.lohko_numero == lohko_id,
         LohkojenPelaajat.pelaaja_id != current_user.id,
-        ~LohkojenPelaajat.pelaaja_id.in_(pelatut_pelaajat)
+        LohkojenPelaajat.pelaaja_id.in_(pelatut_pelaajat)
     ).all()
 
     return render_template('input.html', saman_lohkon_pelaajat=saman_lohkon_pelaajat)
@@ -108,9 +108,7 @@ def input():
 @player.route('/hae_pelaaja/<int:pelaaja_id>', methods=['GET', 'POST'])
 def hae_pelaaja(pelaaja_id):
     pelaaja = hae_pelaajan_tiedot(pelaaja_id)
-    print(pelaaja)
     ottelut = hae_pelaajan_ottelut(pelaaja_id)
-    print(ottelut)
     return render_template('pelaaja_tiedot.html', pelaaja=pelaaja, ottelut=ottelut)
 
 # Index page
