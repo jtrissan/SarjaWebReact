@@ -1,0 +1,35 @@
+{% extends "index.html" %}
+{% block content %}
+    <div class="containerL">
+        <h1>{{ pelaaja.nimi }}</h1>
+        <p>Puhelin: {{ pelaaja.puhelin }}</p>
+        <p>Email: {{ pelaaja.email }}</p>
+        <p>Taso: {{ pelaaja.taso }}</p>
+
+        <h2>Ottelutilastot</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Vastustaja</th>
+                    <th>Kierros</th>
+                    <th>Lohko</th>
+                    <th>1.erä</th>
+                    <th>2.erä</th>
+                    <th>3.erä</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for ottelu in ottelut %}
+                    <tr>
+                        <td><a href="{{ url_for('player.hae_pelaaja', pelaaja_id=ottelu.vastustaja.id) }}">{{ ottelu.vastustaja.nimi }}</a></td>
+                        <td>{{ ottelu.kierros_numero }}</td>
+                        <td>{{ ottelu.lohko_numero }}</td>
+                        <td>{{ ottelu.era1 }}</td>
+                        <td>{{ ottelu.era2 }}</td>
+                        <td>{{ ottelu.era3 }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
