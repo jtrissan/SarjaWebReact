@@ -16,7 +16,8 @@
                 <tbody>
                     {% for pelaaja in pelaajat %}
                         <tr>
-                            <td>{{ pelaaja.pelaaja.nimi }}</td>
+                            <td><a href="{{ url_for('player.hae_pelaaja', pelaaja_id=pelaaja.pelaaja.id) }}">{{ pelaaja.pelaaja.nimi }}</a></td>
+                            <!-- <td>{{ pelaaja.pelaaja.nimi }}</td> -->
                             <td>{{ pelaaja.pisteet }}</td>
                             <td>{{ pelaaja.ottelut_maara }}</td>
                             <td>{{ pelaaja.pelaaja.puhelin }}</td>

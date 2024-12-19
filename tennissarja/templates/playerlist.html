@@ -17,7 +17,7 @@
                 <tbody>
                     {% for pelaaja in pelaajat %}
                     <tr>
-                        <td>{{ pelaaja.nimi }}</td>
+                        <td><a href="{{ url_for('player.hae_pelaaja', pelaaja_id=pelaaja.id) }}">{{ pelaaja.nimi }}</a></td>
                         <td>{{ pelaaja.email }}</td>
                         <td>{{ pelaaja.puhelin }}</td>
                         <td>{{ pelaaja.taso }}</td>

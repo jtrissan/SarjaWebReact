@@ -24,7 +24,7 @@
 -->
         <div class="form-group">
   
-            <label for="pelaaja2_id">Vastustaja:</label>
+            <label for="pelaaja2_id">Pelaaja 2:</label>
             <select id="pelaaja2_id" name="pelaaja2_id" required>
                 {% for pelaaja in saman_lohkon_pelaajat %}
                     <option value="{{ pelaaja.pelaaja.id }}">{{ pelaaja.pelaaja.nimi }}</option>

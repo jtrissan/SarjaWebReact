@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
 from . import db
 from .models import Pelaaja, Ottelu, Sarjakierros, LohkojenPelaajat
-from .services import pisteyta_ottelu, tallenna_ottelu
+from .services import pisteyta_ottelu, tallenna_ottelu, hae_pelaajan_tiedot, hae_pelaajan_ottelut
 
 player = Blueprint('player', __name__)
 
@@ -104,6 +104,14 @@ def input():
     ).all()
 
     return render_template('input.html', saman_lohkon_pelaajat=saman_lohkon_pelaajat)
+
+@player.route('/hae_pelaaja/<int:pelaaja_id>', methods=['GET', 'POST'])
+def hae_pelaaja(pelaaja_id):
+    pelaaja = hae_pelaajan_tiedot(pelaaja_id)
+    print(pelaaja)
+    ottelut = hae_pelaajan_ottelut(pelaaja_id)
+    print(ottelut)
+    return render_template('pelaaja_tiedot.html', pelaaja=pelaaja, ottelut=ottelut)
 
 # Index page
 @player.route('/')
