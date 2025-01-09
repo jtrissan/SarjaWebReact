@@ -1,42 +1,49 @@
 SarjaWeb/
 │
-├── main.py                 # Flask-sovelluksen käynnistystiedosto
-|
-├── requirements.txt        # Tarvittavat Python-kirjastot
-|
-├── /venv/                  # Python sovelluksen virtuaaliajoympäristön sisältävä hakemisto
+├── main.py                  # Flask-sovelluksen käynnistystiedosto
+├── requirements.txt         # Python-riippuvuuksien lista
+├── venv/                    # Virtuaalinen ympäristö
+├── instance/
+│   └── tennissarja.db       # SQLite3-tietokanta
 │
-├── /instance/
-|   └── tennissarja.db      # Sarjan tiedot, Sqlite3 tietokanta 
+├── backend/                 # Flask-taustapalvelin
+│   ├── __init__.py          # Flask-sovelluksen alustaminen
+│   ├── models.py            # SQLAlchemy-tietokantamallit
+│   ├── routes/              # Flask-reitit
+│   │   ├── auth.py          # Kirjautuminen ja rekisteröinti
+│   │   ├── player.py        # Pelaajien toiminnot
+│   │   ├── admin.py         # Admin-reitit
+│   │   └── api.py           # API-päätepisteet Reactille
+│   ├── services.py          # Liiketoimintalogiikka (pistelasku, lohkojako)
+│   └── templates/           # HTML-pohjat, jos käytetään Jinja2:ta yksinkertaisiin näkymiin
 │
-└── /tennissarja/
-    ├── __init__.py         # Flask-sovelluksen alustaminen
-    │
-    ├── models.py           # Tietokantamallit (SQLAlchemy)
-    ├── player.py           # Pelaajan lomakkeiden käsittelu
-    ├── admin.py            # Sarjan ylläpidon lomakkeiden käsittely
-    ├── services.py         # Otteluiden pisteytys, sekä lohkojen ja serjakierrosten hallinta.
-    │                       # + Tietokantaoperaatiot
-    │
-    |── /templates/         # HTML-pohjat (Jinja2)
-    │       ├── admin.html              # Ylläpidon päävalikko
-    │       ├── forgot_password.html    # Salasanan palautus
-    │       ├── index.html              # Pääsivu
-    │       ├── input.html              # Ottelutuloksen syöttö
-    │       ├── login.html              # Sisäänkirjautuminen
-    │       ├── lohkojako.html          # Uuden sarjakierroksen luonti
-    │       ├── pelaaja_tiedot.html     # Pelaajan yhteystiedot ja tilastot
-    │       ├── playerlist.html         # Ylläpidon pelaajalista
-    │       ├── register.html           # Rekisteröitymissivu
-    │       ├── sarjataulukko.html      # Sarjataulukko
-    │       └── update.html             # Pelaajan tietojen päivitys
-    │
-    |── /static/            # Staattiset tiedostot (CSS, JavaScript, kuvat)
-            |── styles.css              # Tyylitiedosto
-            |── admin_styles.css        # Admin käyttöliittymän tyylimäärittelyt
-            |── tenniscourt.jpg         # Taustakuva, pelaajien käyttöliittymä
-            |── hardcourt.jpg           # Taustakuva, ylläpidon käyttöliittymä
-            |── programs.js             # lomakkeen validiointi scriptejä (ei köytössä)
-            └── favicon.ico             # Ikoni selaimen välilehdelle
+├── frontend/                # React-käyttöliittymä
+│   ├── public/              # Staattiset tiedostot (React-juuritiedostot)
+│   │   ├── index.html       # Reactin juuri-HTML
+│   │   └── favicon.ico      # Selaimen ikoni
+│   ├── src/                 # React-koodit
+│   │   ├── App.js           # Reactin pääkomponentti
+│   │   ├── index.js         # Sovelluksen käynnistys
+│   │   ├── components/      # Yksittäiset React-komponentit
+│   │   │   ├── Navbar.js    # Navigointipalkki
+│   │   │   ├── Sarjataulukko.js  # Sarjataulukon näyttö
+│   │   │   └── Esittely.js  # Esittelysivu
+│   │   └── styles/          # CSS-tyylit
+│   │       └── styles.css   # Reactin tyylitiedosto
+│   └── package.json         # Reactin riippuvuuksien ja skriptien määrittely
+│
+├── static/                  # Yleiset staattiset tiedostot Flaskille
+│   ├── css/
+│   │   └── styles.css       # Vanha tyylitiedosto, jos tarvitaan
+│   ├── images/
+│   │   ├── tenniscourt.jpg  # Taustakuva
+│   │   └── logo.png         # Sovelluksen logo
+│   └── js/
+│       └── utils.js         # Yleiset JavaScript-työkalut
+│
+└── migrations/              # Flask-Migrate-tiedostot tietokannan hallintaan
+    └── versions/            # Tietokantamuutosten versiot
+
+
 
 

@@ -1,4 +1,4 @@
-from tennissarja import create_app, create_database
+from backend import create_app, create_database
     
 app = create_app()
 
