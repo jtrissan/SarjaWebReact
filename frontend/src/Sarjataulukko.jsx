@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import './styles.css';
+import './../static/styles.css';
 
 function Sarjataulukko() {
     const [lohkot, setLohkot] = useState([]);

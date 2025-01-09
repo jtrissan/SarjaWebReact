@@ -1,25 +1,27 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import './styles.css';
+import './../static/styles.css';
 import Esittely from './Esittely';
 import Sarjataulukko from './Sarjataulukko';
 import TuloksenTallennus from './TuloksenTallennus';
 import Login from './Login';
 import Register from './Register';
-import AdminDashboard from './AdminDashboard';
+//import AdminDashboard from './AdminDashboard';
 import Logout from './Logout';
 
 function App() {
     const [currentUser, setCurrentUser] = useState({
-        isAuthenticated: true,
-        admin: true,
+        isAuthenticated: false,
+        admin: false,
     });
 
     return (
         <Router>
             <div className="header">
                 <Link to="/">Esittely</Link>
+                {currentUser.isAuthenticated && (
                 <Link to="/sarjataulukko">Sarjataulukko</Link>
+                )}
                 {currentUser.isAuthenticated && (
                 <Link to="/tuloksentallennus">Tuloksen tallennus</Link>
                 )}
@@ -33,7 +35,7 @@ function App() {
                     <Link to="/logout">Kirjaudu ulos</Link>
                 )}
                 {currentUser.isAuthenticated && currentUser.admin && (
-                    <a href="http://localhost:5000/admin">Admin Dashboard</a>
+                    <a href="http://localhost:5000/admin">Ylläpito</a>
                 )}
             </div>
             <Routes>

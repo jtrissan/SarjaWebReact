@@ -3,10 +3,12 @@
 
 from flask import Blueprint, jsonify, request 
 from .models import Pelaaja, LohkojenPelaajat, Sarjakierros, Ottelu, db
+from .services import hae_lohkon_pelaajat, tallenna_ottelu
 from sqlalchemy.exc import IntegrityError
 from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.security import check_password_hash, generate_password_hash
 from . import db
+from datetime import datetime
 
 api = Blueprint('api', __name__)
 
@@ -149,25 +151,84 @@ def get_sarjataulukko():
         return jsonify({'error': 'Internal Server Error'}), 500
 
 # Luo uusi sarjakierros
-@api.route('/kierrokset', methods=['POST'])
-def luo_uusi_kierros():
-    data = request.json
-    uusi_kierros = Sarjakierros(kausi_id=data['kausi_id'])
-    db.session.add(uusi_kierros)
-    db.session.commit()
-    return jsonify({'message': 'Uusi sarjakierros luotu', 'id': uusi_kierros.id}), 201
+#@api.route('/kierrokset', methods=['POST'])
+#def luo_uusi_kierros():
+#    data = request.json
+#    uusi_kierros = Sarjakierros(kausi_id=data['kausi_id'])
+#    db.session.add(uusi_kierros)
+#    db.session.commit()
+#    return jsonify({'message': 'Uusi sarjakierros luotu', 'id': uusi_kierros.id}), 201
+
+# Hae pelaajan tiedot
+@api.route('/hae_pelaaja/<int:pelaaja_id>', methods=['GET'])
+@login_required
+def hae_pelaaja(pelaaja_id):
+    pelaaja = Pelaaja.query.get(pelaaja_id)
+    if not pelaaja:
+        return jsonify({'error': 'Pelaajaa ei löytynyt'}), 404
+
+    return jsonify({
+        'id': pelaaja.id,
+        'nimi': pelaaja.nimi
+    }), 200
+
+# Hae lohko pelaajat
+@api.route('/lohko_pelaajat', methods=['GET'])
+@login_required
+def get_lohko_pelaajat():
+    # Hae uusin sarjakierros
+    uusin_sarjakierros = Sarjakierros.query.order_by(Sarjakierros.kierros_numero.desc()).first()
+    if not uusin_sarjakierros:
+        return jsonify({'error': 'Sarjakierrosta ei löytynyt'}), 404
+
+    sarjakierros_id = uusin_sarjakierros.id
+
+    # Hae pelaajan lohko meneillään olevalla kierroksella
+    lohko = LohkojenPelaajat.query.filter_by(pelaaja_id=current_user.id, sarjakierros_id=sarjakierros_id).first()
+    if not lohko:
+        return jsonify({'error': 'Lohkoa ei löytynyt'}), 404
+
+    lohko_id = lohko.lohko_numero
+
+    # Hae saman lohkon pelaajat services.py:n hae_lohkon_pelaajat-metodilla
+    saman_lohkon_pelaajat = hae_lohkon_pelaajat(sarjakierros_id, lohko_id, current_user.id)
+
+    pelaajat_data = [
+        {'id': pelaaja.id, 'nimi': pelaaja.nimi}
+        for pelaaja in saman_lohkon_pelaajat
+    ]
+
+    return jsonify({
+        'sarjakierros_id': sarjakierros_id,
+        'lohko_id': lohko_id,
+        'pelaaja1_id': current_user.id,
+        'saman_lohkon_pelaajat': pelaajat_data
+    })
 
 # Tallenna ottelutulos
 @api.route('/ottelut', methods=['POST'])
-def tallenna_ottelu():
+@login_required
+def tallenna_ottelu_route():
     data = request.json
-    uusi_ottelu = Ottelu(
-        sarjakierros_id=data['sarjakierros_id'],
-        lohko_id=data['lohko_id'],
+
+    # Muunna erätulokset kokonaisluvuiksi
+    era1_p1 = int(data['eratulokset']['era1_p1']) if data['eratulokset']['era1_p1'] else None
+    era1_p2 = int(data['eratulokset']['era1_p2']) if data['eratulokset']['era1_p2'] else None
+    era2_p1 = int(data['eratulokset']['era2_p1']) if data['eratulokset']['era2_p1'] else None
+    era2_p2 = int(data['eratulokset']['era2_p2']) if data['eratulokset']['era2_p2'] else None
+    era3_p1 = int(data['eratulokset']['era3_p1']) if data['eratulokset']['era3_p1'] else None
+    era3_p2 = int(data['eratulokset']['era3_p2']) if data['eratulokset']['era3_p2'] else None
+
+    tallenna_ottelu(
         pelaaja1_id=data['pelaaja1_id'],
         pelaaja2_id=data['pelaaja2_id'],
-        eratulokset=data['eratulokset']  # JSON-kenttä sisältää erien pisteet
+        era1_p1=era1_p1,
+        era1_p2=era1_p2,
+        era2_p1=era2_p1,
+        era2_p2=era2_p2,
+        era3_p1=era3_p1,
+        era3_p2=era3_p2,
+        sarjakierros_id=data['sarjakierros_id'],
+        lohko_numero=data['lohko_id']
     )
-    db.session.add(uusi_ottelu)
-    db.session.commit()
     return jsonify({'message': 'Ottelutulos tallennettu'}), 201

@@ -88,23 +88,24 @@ def pisteyta_ottelu(era1_p1, era1_p2, era2_p1, era2_p2, era3_p1, era3_p2):
         p2_pisteet += 0.5
 
     # Toinen erä
-    if era2_p1 > era2_p2:
-        if era2_p1 >= 6 and (era2_p1 - era2_p2) >= 2:
-            p1_pisteet += 2
-        elif era2_p1 == 7 and era2_p2 == 6:
-            p1_pisteet += 2
+    if era2_p1 is not None and era2_p2 is not None:
+        if era2_p1 > era2_p2:
+            if era2_p1 >= 6 and (era2_p1 - era2_p2) >= 2:
+                p1_pisteet += 2
+            elif era2_p1 == 7 and era2_p2 == 6:
+                p1_pisteet += 2
+            else:
+                p1_pisteet += 1
+        elif era2_p2 > era2_p1:
+            if era2_p2 >= 6 and (era2_p2 - era2_p1) >= 2:
+                p2_pisteet += 2
+            elif era2_p2 == 7 and era2_p1 == 6:
+                p2_pisteet += 2
+            else:
+                p2_pisteet += 1
         else:
-            p1_pisteet += 1
-    elif era2_p2 > era2_p1:
-        if era2_p2 >= 6 and (era2_p2 - era2_p1) >= 2:
-            p2_pisteet += 2
-        elif era2_p2 == 7 and era2_p1 == 6:
-            p2_pisteet += 2
-        else:
-            p2_pisteet += 1
-    else:
-        p1_pisteet += 0.5
-        p2_pisteet += 0.5
+            p1_pisteet += 0.5
+            p2_pisteet += 0.5
 
     # Kolmas erä (super tiebreak)
     if era3_p1 is not None and era3_p2 is not None:
@@ -223,3 +224,21 @@ def jaa_pelaajat_uudelle_kierrokselle():
             lohkojen_pelaaja = LohkojenPelaajat(sarjakierros_id=uusi_sarjakierros.id, lohko_numero=lohko_numero, pelaaja_id=pelaaja.pelaaja_id)
             db.session.add(lohkojen_pelaaja)
     db.session.commit()
+
+def hae_lohkon_pelaajat(sarjakierros_id, lohko_id, current_user_id):
+    pelatut_ottelut = Ottelu.query.filter(
+        (Ottelu.pelaaja1_id == current_user_id) | (Ottelu.pelaaja2_id == current_user_id),
+        Ottelu.sarjakierros_id == sarjakierros_id,
+        Ottelu.lohko_numero == lohko_id
+    ).all()
+    pelatut_pelaajat = {ottelu.pelaaja1_id for ottelu in pelatut_ottelut} | {ottelu.pelaaja2_id for ottelu in pelatut_ottelut}
+    pelatut_pelaajat.discard(current_user_id)
+
+    saman_lohkon_pelaajat = LohkojenPelaajat.query.filter(
+        LohkojenPelaajat.sarjakierros_id == sarjakierros_id,
+        LohkojenPelaajat.lohko_numero == lohko_id,
+        LohkojenPelaajat.pelaaja_id != current_user_id,
+        LohkojenPelaajat.pelaaja_id.notin_(pelatut_pelaajat)
+    ).all()
+
+    return [pelaaja.pelaaja for pelaaja in saman_lohkon_pelaajat]
