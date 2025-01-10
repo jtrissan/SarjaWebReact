@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import './../static/styles.css';
 import Esittely from './Esittely';
 import Sarjataulukko from './Sarjataulukko';
 import TuloksenTallennus from './TuloksenTallennus';
 import Login from './Login';
 import Register from './Register';
-//import AdminDashboard from './AdminDashboard';
 import Logout from './Logout';
 import PlayerDetails from './PlayerDetails';
+import UpdateProfile from './UpdateProfile';
 
 function App() {
     const [currentUser, setCurrentUser] = useState({ isAuthenticated: false, admin: false });
@@ -37,6 +37,9 @@ function App() {
                 {currentUser.isAuthenticated && (
                     <Link to="/tuloksentallennus">Tuloksen tallennus</Link>
                 )}
+                {currentUser.isAuthenticated && (
+                    <Link to="/update_profile">Päivitä tiedot</Link>
+                )}
                 {!currentUser.isAuthenticated && (
                     <Link to="/login">Kirjaudu sisään</Link>
                 )}
@@ -54,6 +57,7 @@ function App() {
                 <Route path="/" element={<Esittely />} />
                 <Route path="/sarjataulukko" element={<Sarjataulukko />} />
                 <Route path="/tuloksentallennus" element={<TuloksenTallennus />} />
+                <Route path="/update_profile" element={<UpdateProfile />} />
                 <Route path="/login" element={<Login setCurrentUser={setCurrentUser} />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/player/:pelaajaId" element={<PlayerDetails />} />

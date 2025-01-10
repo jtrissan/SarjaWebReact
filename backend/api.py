@@ -17,15 +17,46 @@ api = Blueprint('api', __name__)
 def health_check():
     return jsonify({'status': 'ok', 'message': 'API is running'}), 200
 
+# Hae nykyisen käyttäjän tiedot
 @api.route('/current_user', methods=['GET'])
 def current_user_route():
     if current_user.is_authenticated:
         return jsonify({
             'isAuthenticated': True,
-            'admin': current_user.admin
+            'admin': current_user.admin,
+            'nimi': current_user.nimi,
+            'email': current_user.email,
+            'puhelin': current_user.puhelin,
+            'aktiivinen': current_user.aktiivinen,
+            'taso': current_user.taso
         }), 200
     else:
         return jsonify({'isAuthenticated': False}), 200
+
+# Päivitä käyttäjän tiedot
+@api.route('/update_profile', methods=['POST'])
+@login_required
+def update_profile():
+    data = request.get_json()
+    current_user.nimi = data['nimi']
+    current_user.email = data['email']
+    current_user.puhelin = data['puhelin']
+    current_user.aktiivinen = data['aktiivisuus'] == 'True'
+    current_user.taso = data['taso']
+    if data['password']:
+        current_user.password = generate_password_hash(data['password'], method='pbkdf2:sha256')
+    db.session.commit()
+    return jsonify({'message': 'Tiedot päivitetty onnistuneesti'}), 200
+
+#@api.route('/current_user', methods=['GET'])
+#def current_user_route():
+#    if current_user.is_authenticated:
+#        return jsonify({
+#            'isAuthenticated': True,
+#            'admin': current_user.admin
+#        }), 200
+#    else:
+#        return jsonify({'isAuthenticated': False}), 200
 
 
 # Hae kaikki pelaajat
