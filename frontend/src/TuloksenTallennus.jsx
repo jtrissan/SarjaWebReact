@@ -6,11 +6,11 @@ function TuloksenTallennus() {
     const [sarjakierrosId, setSarjakierrosId] = useState('');
     const [lohkoId, setLohkoId] = useState('');
     const [pelaaja1Id, setPelaaja1Id] = useState('');
-    const [pelaaja1Nimi, setPelaaja1Nimi] = useState(''); // Uusi tila pelaaja 1:n nimelle
+    const [pelaaja1Nimi, setPelaaja1Nimi] = useState('');
     const [pelaaja2Id, setPelaaja2Id] = useState('');
     const [eratulokset, setEratulokset] = useState({ era1_p1: '', era1_p2: '', era2_p1: '', era2_p2: '', era3_p1: '', era3_p2: '' });
     const [samanLohkonPelaajat, setSamanLohkonPelaajat] = useState([]);
-    const navigate = useNavigate(); // Hook navigointia varten
+    const navigate = useNavigate();
 
     useEffect(() => {
         // Hae tiedot backendistä
@@ -95,7 +95,7 @@ function TuloksenTallennus() {
 
         if (response.ok) {
             alert('Ottelutulos tallennettu onnistuneesti');
-            navigate('/sarjataulukko'); // Ohjaa käyttäjä sarjataulukko-sivulle
+            navigate('/sarjataulukko');
         } else {
             alert('Ottelutuloksen tallennus epäonnistui');
         }
@@ -159,17 +159,17 @@ function TuloksenTallennus() {
                         </thead>
                         <tbody>
                             <tr>
-                                <td>1. erä</td>
+                                <td><label htmlFor="era1_p1">1. erä</label></td>
                                 <td><input type="number" id="era1_p1" name="era1_p1" min="0" max="7" value={eratulokset.era1_p1} onChange={handleEratuloksetChange} required /></td>
                                 <td><input type="number" id="era1_p2" name="era1_p2" min="0" max="7" value={eratulokset.era1_p2} onChange={handleEratuloksetChange} required /></td>
                             </tr>
                             <tr>
-                                <td>2. erä, jos aloitettu</td>
+                                <td><label htmlFor="era2_p1">2. erä, jos aloitettu</label></td>
                                 <td><input type="number" id="era2_p1" name="era2_p1" min="0" max="7" value={eratulokset.era2_p1} onChange={handleEratuloksetChange} /></td>
                                 <td><input type="number" id="era2_p2" name="era2_p2" min="0" max="7" value={eratulokset.era2_p2} onChange={handleEratuloksetChange} /></td>
                             </tr>
                             <tr>
-                                <td>3. erä, jos aloitettu</td>
+                                <td><label htmlFor="era3_p1">3. erä, jos aloitettu</label></td>
                                 <td><input type="number" id="era3_p1" name="era3_p1" min="0" max="30" value={eratulokset.era3_p1} onChange={handleEratuloksetChange} /></td>
                                 <td><input type="number" id="era3_p2" name="era3_p2" min="0" max="30" value={eratulokset.era3_p2} onChange={handleEratuloksetChange} /></td>
                             </tr>

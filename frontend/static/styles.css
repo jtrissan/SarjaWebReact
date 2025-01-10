@@ -16,7 +16,7 @@
 body {
     font-family: Arial, sans-serif;
     background-color: #ea860b; /* Oletustaustaväri (clay court -väri) */
-    background-image: url('./static/tenniscourt.jpg'); /* Tenniskenttä-kuva */
+    background-image: url('./tenniscourt.jpg'); /* Tenniskenttä-kuva */
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

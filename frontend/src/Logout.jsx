@@ -5,24 +5,19 @@ function Logout({ setCurrentUser }) {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const logout = async () => {
-            const response = await fetch('http://localhost:5000/api/logout', {
-                method: 'POST',
-                credentials: 'include',
-            });
-
-            if (response.ok) {
-                setCurrentUser({
-                    isAuthenticated: false,
-                    admin: false,
-                });
-                navigate('/login');
-            } else {
-                alert('Uloskirjautuminen epäonnistui');
-            }
-        };
-
-        logout();
+        fetch('http://localhost:5000/api/logout', {
+            method: 'POST',
+            credentials: 'include'
+        })
+            .then(response => {
+                if (response.ok) {
+                    setCurrentUser({ isAuthenticated: false, admin: false });
+                    navigate('/');
+                } else {
+                    alert('Uloskirjautuminen epäonnistui');
+                }
+            })
+            .catch(error => console.error('Error logging out:', error));
     }, [navigate, setCurrentUser]);
 
     return <div>Kirjaudutaan ulos...</div>;

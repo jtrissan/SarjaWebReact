@@ -12,7 +12,11 @@ def hae_pelaajan_ottelut(pelaaja_id):
         if ottelu.pelaaja1_id == pelaaja_id:
             vastustaja = hae_pelaajan_tiedot(ottelu.pelaaja2_id)
             ottelutiedot.append({
-                'vastustaja': vastustaja,
+                'id': ottelu.id,
+                'vastustaja': {
+                    'id': vastustaja.id,
+                    'nimi': vastustaja.nimi
+                },
                 'kierros_numero': ottelu.sarjakierros.kierros_numero,
                 'lohko_numero': ottelu.lohko_numero,
                 'era1_p1': ottelu.era1_p1,
@@ -28,17 +32,21 @@ def hae_pelaajan_ottelut(pelaaja_id):
         else:
             vastustaja = hae_pelaajan_tiedot(ottelu.pelaaja1_id)
             ottelutiedot.append({
-                'vastustaja': vastustaja,
+                'id': ottelu.id,
+                'vastustaja': {
+                    'id': vastustaja.id,
+                    'nimi': vastustaja.nimi
+                },
                 'kierros_numero': ottelu.sarjakierros.kierros_numero,
                 'lohko_numero': ottelu.lohko_numero,
-                'era1_p1': ottelu.era1_p2,
-                'era2_p1': ottelu.era2_p2,
-                'era3_p1': ottelu.era3_p2,
-                'era1_p2': ottelu.era1_p1,
-                'era2_p2': ottelu.era2_p1,
-                'era3_p2': ottelu.era3_p1,
-                'p1_pisteet': ottelu.p2_pisteet,
-                'p2_pisteet': ottelu.p1_pisteet,
+                'era1_p1': ottelu.era1_p1,
+                'era2_p1': ottelu.era2_p1,
+                'era3_p1': ottelu.era3_p1,
+                'era1_p2': ottelu.era1_p2,
+                'era2_p2': ottelu.era2_p2,
+                'era3_p2': ottelu.era3_p2,
+                'p1_pisteet': ottelu.p1_pisteet,
+                'p2_pisteet': ottelu.p2_pisteet,
                 'ottelun_aika': ottelu.ottelun_aika
             })
     return ottelutiedot

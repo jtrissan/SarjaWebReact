@@ -9,21 +9,22 @@ function Login({ setCurrentUser }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
         const response = await fetch('http://localhost:5000/api/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            credentials: 'include',  // Lisää tämä rivi
-            body: JSON.stringify({ email, password }),
+            credentials: 'include',
+            body: JSON.stringify({
+                email,
+                password,
+            }),
         });
 
         if (response.ok) {
             const data = await response.json();
-            setCurrentUser({
-                isAuthenticated: true,
-                admin: data.admin, // Oletetaan, että backend palauttaa admin-tiedon
-            });
+            setCurrentUser({ isAuthenticated: true, admin: data.admin });
             navigate('/');
         } else {
             alert('Kirjautuminen epäonnistui');
@@ -39,7 +40,6 @@ function Login({ setCurrentUser }) {
                     <input
                         type="email"
                         id="email"
-                        name="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
@@ -51,20 +51,14 @@ function Login({ setCurrentUser }) {
                     <input
                         type="password"
                         id="password"
-                        name="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
                     />
                 </div>
 
-                <button type="submit">Kirjaudu sisään</button>
+                <button type="submit">Kirjaudu</button>
             </form>
-
-            <div className="links">
-                <a href="/forgot-password">Unohditko salasanasi?</a>
-                <a href="/register">Rekisteröidy</a>
-            </div>
         </div>
     );
 }

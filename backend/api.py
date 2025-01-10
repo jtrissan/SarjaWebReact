@@ -3,7 +3,7 @@
 
 from flask import Blueprint, jsonify, request 
 from .models import Pelaaja, LohkojenPelaajat, Sarjakierros, Ottelu, db
-from .services import hae_lohkon_pelaajat, tallenna_ottelu
+from .services import hae_lohkon_pelaajat, tallenna_ottelu, hae_pelaajan_tiedot, hae_pelaajan_ottelut
 from sqlalchemy.exc import IntegrityError
 from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -16,6 +16,17 @@ api = Blueprint('api', __name__)
 @api.route('/health', methods=['GET'])
 def health_check():
     return jsonify({'status': 'ok', 'message': 'API is running'}), 200
+
+@api.route('/current_user', methods=['GET'])
+def current_user_route():
+    if current_user.is_authenticated:
+        return jsonify({
+            'isAuthenticated': True,
+            'admin': current_user.admin
+        }), 200
+    else:
+        return jsonify({'isAuthenticated': False}), 200
+
 
 # Hae kaikki pelaajat
 @api.route('/pelaajat', methods=['GET'])
@@ -47,19 +58,61 @@ def add_pelaaja():
         return jsonify({'error': 'Sähköpostiosoite on jo käytössä'}), 400
 
 # Hae pelaajan tiedot
-@api.route('/pelaajat/<int:id>', methods=['GET'])
-def get_pelaaja(id):
-    pelaaja = Pelaaja.query.get(id)
-    if pelaaja:
-        return jsonify({
-            'id': pelaaja.id, 
-            'nimi': pelaaja.nimi, 
-            'email': pelaaja.email, 
-            'taso': pelaaja.taso, 
-            'puhelin': pelaaja.puhelin
-        }), 200
-    else:
+#@api.route('/pelaajat/<int:id>', methods=['GET'])
+#def get_pelaaja(id):
+#    pelaaja = Pelaaja.query.get(id)
+#    if pelaaja:
+#        return jsonify({
+#            'id': pelaaja.id, 
+#            'nimi': pelaaja.nimi, 
+#            'email': pelaaja.email, 
+#            'taso': pelaaja.taso, 
+#            'puhelin': pelaaja.puhelin
+#        }), 200
+#    else:
+#        return jsonify({'error': 'Pelaajaa ei löytynyt'}), 404
+# Hae pelaajan tiedot
+@api.route('/hae_pelaaja/<int:pelaaja_id>', methods=['GET'])
+@login_required
+def hae_pelaaja(pelaaja_id):
+    pelaaja = hae_pelaajan_tiedot(pelaaja_id)
+    if not pelaaja:
         return jsonify({'error': 'Pelaajaa ei löytynyt'}), 404
+
+    return jsonify({
+        'id': pelaaja.id,
+        'nimi': pelaaja.nimi,
+        'puhelin': pelaaja.puhelin,
+        'email': pelaaja.email,
+        'taso': pelaaja.taso
+    }), 200
+
+# Hae pelaajan ottelut
+@api.route('/hae_pelaajan_ottelut/<int:pelaaja_id>', methods=['GET'])
+@login_required
+def hae_pelaajan_ottelut_route(pelaaja_id):
+    ottelut = hae_pelaajan_ottelut(pelaaja_id)
+    ottelutiedot = []
+    for ottelu in ottelut:
+        ottelutiedot.append({
+            'id': ottelu['id'],
+            'vastustaja': {
+                'id': ottelu['vastustaja']['id'],
+                'nimi': ottelu['vastustaja']['nimi']
+            },
+            'kierros_numero': ottelu['kierros_numero'],
+            'lohko_numero': ottelu['lohko_numero'],
+            'era1_p1': ottelu['era1_p1'],
+            'era2_p1': ottelu['era2_p1'],
+            'era3_p1': ottelu['era3_p1'],
+            'era1_p2': ottelu['era1_p2'],
+            'era2_p2': ottelu['era2_p2'],
+            'era3_p2': ottelu['era3_p2'],
+            'p1_pisteet': ottelu['p1_pisteet'],
+            'p2_pisteet': ottelu['p2_pisteet'],
+            'ottelun_aika': ottelu['ottelun_aika']
+        })
+    return jsonify(ottelutiedot), 200
 
 # Päivitä pelaajan tiedot
 @api.route('/pelaajat/<int:id>', methods=['PUT']) 
@@ -160,17 +213,17 @@ def get_sarjataulukko():
 #    return jsonify({'message': 'Uusi sarjakierros luotu', 'id': uusi_kierros.id}), 201
 
 # Hae pelaajan tiedot
-@api.route('/hae_pelaaja/<int:pelaaja_id>', methods=['GET'])
-@login_required
-def hae_pelaaja(pelaaja_id):
-    pelaaja = Pelaaja.query.get(pelaaja_id)
-    if not pelaaja:
-        return jsonify({'error': 'Pelaajaa ei löytynyt'}), 404
-
-    return jsonify({
-        'id': pelaaja.id,
-        'nimi': pelaaja.nimi
-    }), 200
+#@api.route('/hae_pelaaja/<int:pelaaja_id>', methods=['GET'])
+#@login_required
+#def hae_pelaaja(pelaaja_id):
+#    pelaaja = Pelaaja.query.get(pelaaja_id)
+#    if not pelaaja:
+#        return jsonify({'error': 'Pelaajaa ei löytynyt'}), 404
+#
+#    return jsonify({
+#        'id': pelaaja.id,
+#        'nimi': pelaaja.nimi
+#    }), 200
 
 # Hae lohko pelaajat
 @api.route('/lohko_pelaajat', methods=['GET'])
