@@ -9,12 +9,36 @@ function Register() {
     const [taso, setTaso] = useState('e');
     const [password, setPassword] = useState('');
     const [password2, setPassword2] = useState('');
+    const [errors, setErrors] = useState({});
+    const navigate = useNavigate();
+
+    const validateEmail = (email) => {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    };
+
+    const validateForm = () => {
+        const newErrors = {};
+
+        if (!validateEmail(email)) {
+            newErrors.email = 'Syötä kelvollinen sähköpostiosoite.';
+        }
+
+        if (password.length < 8) {
+            newErrors.password = 'Salasanan on oltava vähintään 8 merkkiä pitkä.';
+        }
+
+        if (password !== password2) {
+            newErrors.password2 = 'Salasanat eivät täsmää.';
+        }
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (password !== password2) {
-            alert('Salasanat eivät täsmää');
+        if (!validateForm()) {
             return;
         }
 
@@ -34,6 +58,7 @@ function Register() {
 
         if (response.ok) {
             alert('Rekisteröityminen onnistui');
+            navigate('/login');
         } else {
             alert('Rekisteröityminen epäonnistui');
         }
@@ -48,7 +73,6 @@ function Register() {
                     <input
                         type="text"
                         id="nimi"
-                        name="nimi"
                         value={nimi}
                         onChange={(e) => setNimi(e.target.value)}
                         required
@@ -60,11 +84,11 @@ function Register() {
                     <input
                         type="email"
                         id="email"
-                        name="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
                     />
+                    {errors.email && <p className="error-text">{errors.email}</p>}
                 </div>
 
                 <div className="form-group">
@@ -72,7 +96,6 @@ function Register() {
                     <input
                         type="text"
                         id="puhelin"
-                        name="puhelin"
                         value={puhelin}
                         onChange={(e) => setPuhelin(e.target.value)}
                         required
@@ -82,11 +105,17 @@ function Register() {
                 <div className="form-group">
                     <label>Arvioitu taso turnauksissa:</label>
                     <div className="checkbox-group">
-                        <label><input type="radio" name="taso" value="a" checked={taso === 'a'} onChange={(e) => setTaso(e.target.value)} /> A</label>
-                        <label><input type="radio" name="taso" value="b" checked={taso === 'b'} onChange={(e) => setTaso(e.target.value)} /> B</label>
-                        <label><input type="radio" name="taso" value="c" checked={taso === 'c'} onChange={(e) => setTaso(e.target.value)} /> C</label>
-                        <label><input type="radio" name="taso" value="d" checked={taso === 'd'} onChange={(e) => setTaso(e.target.value)} /> D</label>
-                        <label><input type="radio" name="taso" value="e" checked={taso === 'e'} onChange={(e) => setTaso(e.target.value)} /> E</label>
+                        {['a', 'b', 'c', 'd', 'e'].map((level) => (
+                            <label key={level}>
+                                <input
+                                    type="radio"
+                                    name="taso"
+                                    value={level}
+                                    checked={taso === level}
+                                    onChange={(e) => setTaso(e.target.value)}
+                                /> {level.toUpperCase()}
+                            </label>
+                        ))}
                     </div>
                 </div>
 
@@ -95,11 +124,11 @@ function Register() {
                     <input
                         type="password"
                         id="password"
-                        name="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
                     />
+                    {errors.password && <p className="error-text">{errors.password}</p>}
                 </div>
 
                 <div className="form-group">
@@ -107,11 +136,11 @@ function Register() {
                     <input
                         type="password"
                         id="password2"
-                        name="password2"
                         value={password2}
                         onChange={(e) => setPassword2(e.target.value)}
                         required
                     />
+                    {errors.password2 && <p className="error-text">{errors.password2}</p>}
                 </div>
 
                 <button type="submit">Rekisteröidy</button>

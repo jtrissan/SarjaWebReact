@@ -1,5 +1,5 @@
 # API:n määrittelyt ja reitit
-# Tässä tiedostossa määritellään API:n reitit ja niiden toiminnallisuudet.
+# Tässä tiedostossa määritellään React API:n reitit ja niiden toiminnallisuudet.
 
 from flask import Blueprint, jsonify, request 
 from .models import Pelaaja, LohkojenPelaajat, Sarjakierros, Ottelu, db
@@ -48,17 +48,6 @@ def update_profile():
     db.session.commit()
     return jsonify({'message': 'Tiedot päivitetty onnistuneesti'}), 200
 
-#@api.route('/current_user', methods=['GET'])
-#def current_user_route():
-#    if current_user.is_authenticated:
-#        return jsonify({
-#            'isAuthenticated': True,
-#            'admin': current_user.admin
-#        }), 200
-#    else:
-#        return jsonify({'isAuthenticated': False}), 200
-
-
 # Hae kaikki pelaajat
 @api.route('/pelaajat', methods=['GET'])
 def get_pelaajat():
@@ -88,20 +77,6 @@ def add_pelaaja():
         db.session.rollback()
         return jsonify({'error': 'Sähköpostiosoite on jo käytössä'}), 400
 
-# Hae pelaajan tiedot
-#@api.route('/pelaajat/<int:id>', methods=['GET'])
-#def get_pelaaja(id):
-#    pelaaja = Pelaaja.query.get(id)
-#    if pelaaja:
-#        return jsonify({
-#            'id': pelaaja.id, 
-#            'nimi': pelaaja.nimi, 
-#            'email': pelaaja.email, 
-#            'taso': pelaaja.taso, 
-#            'puhelin': pelaaja.puhelin
-#        }), 200
-#    else:
-#        return jsonify({'error': 'Pelaajaa ei löytynyt'}), 404
 # Hae pelaajan tiedot
 @api.route('/hae_pelaaja/<int:pelaaja_id>', methods=['GET'])
 @login_required
@@ -233,28 +208,6 @@ def get_sarjataulukko():
     except Exception as e:
         print(f"Error: {e}")
         return jsonify({'error': 'Internal Server Error'}), 500
-
-# Luo uusi sarjakierros
-#@api.route('/kierrokset', methods=['POST'])
-#def luo_uusi_kierros():
-#    data = request.json
-#    uusi_kierros = Sarjakierros(kausi_id=data['kausi_id'])
-#    db.session.add(uusi_kierros)
-#    db.session.commit()
-#    return jsonify({'message': 'Uusi sarjakierros luotu', 'id': uusi_kierros.id}), 201
-
-# Hae pelaajan tiedot
-#@api.route('/hae_pelaaja/<int:pelaaja_id>', methods=['GET'])
-#@login_required
-#def hae_pelaaja(pelaaja_id):
-#    pelaaja = Pelaaja.query.get(pelaaja_id)
-#    if not pelaaja:
-#        return jsonify({'error': 'Pelaajaa ei löytynyt'}), 404
-#
-#    return jsonify({
-#        'id': pelaaja.id,
-#        'nimi': pelaaja.nimi
-#    }), 200
 
 # Hae lohko pelaajat
 @api.route('/lohko_pelaajat', methods=['GET'])

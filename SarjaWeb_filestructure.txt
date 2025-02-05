@@ -1,48 +1,53 @@
 SarjaWeb/
 │
-├── main.py                  # Flask-sovelluksen käynnistystiedosto
-├── requirements.txt         # Python-riippuvuuksien lista
-├── venv/                    # Virtuaalinen ympäristö
+├── main.py                    # Flask-sovelluksen käynnistystiedosto
+├── requirements.txt           # Riippuvuudet
+├── venv/                      # Virtuaalinen ympäristö TBD
 ├── instance/
-│   └── tennissarja.db       # SQLite3-tietokanta
+│   └── tennissarja.db         # SQLite3-tietokanta
 │
-├── backend/                 # Flask-taustapalvelin
-│   ├── __init__.py          # Flask-sovelluksen alustaminen
-│   ├── models.py            # SQLAlchemy-tietokantamallit
-│   ├── routes/              # Flask-reitit
-│   │   ├── auth.py          # Kirjautuminen ja rekisteröinti
-│   │   ├── player.py        # Pelaajien toiminnot
-│   │   ├── admin.py         # Admin-reitit
-│   │   └── api.py           # API-päätepisteet Reactille
-│   ├── services.py          # Liiketoimintalogiikka (pistelasku, lohkojako)
-│   └── templates/           # HTML-pohjat, jos käytetään Jinja2:ta yksinkertaisiin näkymiin
+├── backend/                   # Flask-taustapalvelin
+│   ├── __init__.py            # Flask-sovelluksen alustaminen
+│   ├── admin.py               # Ylläpidon toiminnot
+│   ├── api.py                 # Rajapinta React-käyttöliittymään
+│   ├── auth.py                # Autentikoinnin reitit Flask -käyttöliittymässä
+│   ├── models.py              # SQLAlchemy tietokantamallit
+│   ├── player.py              # Pelaajan Flask -käyttöliittymän reitit
+│   ├── services.py            # Liiketoimintalogiikka (pistelasku, lohkojako)
+│   ├── static/                #
+│   │   ├── styles.css         # tyylimäärittelyt
+│   │   ├── admin_styles.css   # ylläpidon tyylimäärittelyt
+│   │   ├── hardcourt.jpg      # Admin taustakuva
+│   │   ├── tenniscourt.jpg    # Pelaajien taustakuva
+│   │   └── favicon.ico        # Selaimen ikoni
+│   └── templates/             # Flask käyttöliittymän HTML-pohjat.
 │
-├── frontend/                # React-käyttöliittymä
-│   ├── public/              # Staattiset tiedostot (React-juuritiedostot)
-│   │   ├── index.html       # Reactin juuri-HTML
-│   │   └── favicon.ico      # Selaimen ikoni
-│   ├── src/                 # React-koodit
-│   │   ├── App.js           # Reactin pääkomponentti
-│   │   ├── index.js         # Sovelluksen käynnistys
-│   │   ├── components/      # Yksittäiset React-komponentit
-│   │   │   ├── Navbar.js    # Navigointipalkki
-│   │   │   ├── Sarjataulukko.js  # Sarjataulukon näyttö
-│   │   │   └── Esittely.js  # Esittelysivu
-│   │   └── styles/          # CSS-tyylit
-│   │       └── styles.css   # Reactin tyylitiedosto
+├── frontend/                  # React-käyttöliittymä
+│   ├── public/                # Staattiset tiedostot (React-juuritiedostot)
+│   │   ├── index.html         # Reactin juuri-HTML
+│   │   └── favicon.ico        # Selaimen ikoni
+│   ├── src/                   # React-koodit
+│   │   ├── AdminDashboerd.jsx # Reactin pääkomponentti
+│   │   ├── App.jsx            # Sovelluksen käynnistys
+│   │   ├── Esittely.jsx       # Yksittäiset React-komponentit
+│   │   ├── index.jsx          # Navigointipalkki
+│   │   ├── Login.jsx          # Sarjataulukon näyttö
+│   │   ├── Logout.jsx         # Sarjataulukon näyttö
+│   │   ├── main.jsx           # Sarjataulukon näyttö
+│   │   ├── PlayerDetails.jsx  # Sarjataulukon näyttö
+│   │   ├── Register.jsx       # Sarjataulukon näyttö
+│   │   ├── Sarjataulukko.jsx  # Sarjataulukon näyttö
+│   │   ├── TuloksenTallennus.jsx  # Sarjataulukon näyttö
+│   │   └── favicon.ico        # Selaimen ikoni
+│   ├── static/          # Reactin yhteiset määritykset ja resurssit
+│   │   ├── hardcourt.jpg      # Taustakuva 1
+│   │   ├── tenniscourt.jpg    # Taustakuva 2
+│   │   ├── favicon.ico        # Selaimen ikoni
+│   │   └── styles.css         # Reactin tyylitiedosto
 │   └── package.json         # Reactin riippuvuuksien ja skriptien määrittely
 │
-├── static/                  # Yleiset staattiset tiedostot Flaskille
-│   ├── css/
-│   │   └── styles.css       # Vanha tyylitiedosto, jos tarvitaan
-│   ├── images/
-│   │   ├── tenniscourt.jpg  # Taustakuva
-│   │   └── logo.png         # Sovelluksen logo
-│   └── js/
-│       └── utils.js         # Yleiset JavaScript-työkalut
-│
-└── migrations/              # Flask-Migrate-tiedostot tietokannan hallintaan
-    └── versions/            # Tietokantamuutosten versiot
+└── migrations/              # Flask-Migrate-tiedostot tietokannan hallintaa TBD
+    └── versions/            # Tietokantamuutosten versiot TBD
 
 
 

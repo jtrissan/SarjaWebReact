@@ -10,10 +10,10 @@ function UpdateProfile() {
     const [taso, setTaso] = useState('a');
     const [password, setPassword] = useState('');
     const [password2, setPassword2] = useState('');
+    const [errors, setErrors] = useState({});
     const navigate = useNavigate();
 
     useEffect(() => {
-        // Hae nykyisen käyttäjän tiedot
         fetch('http://localhost:5000/api/current_user', {
             credentials: 'include'
         })
@@ -28,11 +28,33 @@ function UpdateProfile() {
             .catch(error => console.error('Error fetching current user data:', error));
     }, []);
 
+    const validateEmail = (email) => {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    };
+
+    const validateForm = () => {
+        const newErrors = {};
+
+        if (!validateEmail(email)) {
+            newErrors.email = 'Syötä kelvollinen sähköpostiosoite.';
+        }
+
+        if (password && password.length < 8) {
+            newErrors.password = 'Salasanan on oltava vähintään 8 merkkiä pitkä.';
+        }
+
+        if (password && password !== password2) {
+            newErrors.password2 = 'Salasanat eivät täsmää.';
+        }
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (password !== password2) {
-            alert('Salasanat eivät täsmää');
+        if (!validateForm()) {
             return;
         }
 
@@ -86,6 +108,7 @@ function UpdateProfile() {
                         onChange={(e) => setEmail(e.target.value)}
                         required
                     />
+                    {errors.email && <p className="error-text">{errors.email}</p>}
                 </div>
 
                 <div className="form-group">
@@ -126,63 +149,25 @@ function UpdateProfile() {
                 </div>
 
                 <div className="form-group">
-                    <label for="taso">Arvioitu taso turnauksissa:</label>
+                    <label htmlFor="taso">Arvioitu taso turnauksissa:</label>
                     <div className="checkbox-group">
-                        <label>
-                            <input
-                                type="radio"
-                                name="taso"
-                                value="a"
-                                checked={taso === 'a'}
-                                onChange={() => setTaso('a')}
-                            />
-                            A
-                        </label>
-                        <label>
-                            <input
-                                type="radio"
-                                name="taso"
-                                value="b"
-                                checked={taso === 'b'}
-                                onChange={() => setTaso('b')}
-                            />
-                            B
-                        </label>
-                        <label>
-                            <input
-                                type="radio"
-                                name="taso"
-                                value="c"
-                                checked={taso === 'c'}
-                                onChange={() => setTaso('c')}
-                            />
-                            C
-                        </label>
-                        <label>
-                            <input
-                                type="radio"
-                                name="taso"
-                                value="d"
-                                checked={taso === 'd'}
-                                onChange={() => setTaso('d')}
-                            />
-                            D
-                        </label>
-                        <label>
-                            <input
-                                type="radio"
-                                name="taso"
-                                value="e"
-                                checked={taso === 'e'}
-                                onChange={() => setTaso('e')}
-                            />
-                            E
-                        </label>
+                        {['a', 'b', 'c', 'd', 'e'].map(level => (
+                            <label key={level}>
+                                <input
+                                    type="radio"
+                                    name="taso"
+                                    value={level}
+                                    checked={taso === level}
+                                    onChange={() => setTaso(level)}
+                                />
+                                {level.toUpperCase()}
+                            </label>
+                        ))}
                     </div>
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="password">Uusi salasana:</label>
+                    <label htmlFor="password">Uusi salasana (jätä tyhjäksi, jos et halua vaihtaa):</label>
                     <input
                         type="password"
                         id="password"
@@ -190,6 +175,7 @@ function UpdateProfile() {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     />
+                    {errors.password && <p className="error-text">{errors.password}</p>}
                 </div>
 
                 <div className="form-group">
@@ -201,6 +187,7 @@ function UpdateProfile() {
                         value={password2}
                         onChange={(e) => setPassword2(e.target.value)}
                     />
+                    {errors.password2 && <p className="error-text">{errors.password2}</p>}
                 </div>
 
                 <button type="submit">Päivitä tiedot</button>

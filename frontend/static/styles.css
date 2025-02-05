@@ -44,6 +44,13 @@ body {
     border-radius: 5px;
 }
 
+.error-text {
+    color: red;
+    font-size: 12px;
+    font-weight: bold;
+    margin-top: 5px;
+}
+
 .header a:hover {
     background-color: #555;
 }
