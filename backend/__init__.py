@@ -9,19 +9,23 @@
 
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from os import path
+from os import path, environ
 from flask_login import LoginManager
 from flask_cors import CORS
+from dotenv import load_dotenv
+
+# Lataa ympäristömuuttujat .env-tiedostosta
+load_dotenv()
 
 db = SQLAlchemy()
 DB_NAME = "tennissarja.db"
 
 def create_app():
     app = Flask(__name__)
-    app.config['SECRET_KEY'] = 'secret_key'
-    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
+    app.config['SECRET_KEY'] = environ.get('SECRET_KEY')
+    app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('DATABASE_URL', f'sqlite:///{DB_NAME}')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    CORS(app, supports_credentials=True) # Sallii CORS-pyynnöt
+    CORS(app, supports_credentials=True, origins=environ.get('CORS_ALLOWED_ORIGINS').split(','))
     db.init_app(app)
 
 
@@ -58,7 +62,7 @@ def create_app():
     return app
 
 def create_database(app):
-    if not path.exists('SarjaWeb/' + DB_NAME):
+    if not path.exists('SarjaWebReact/' + DB_NAME):
         with app.app_context():
             db.create_all()
         print('Created Database!')

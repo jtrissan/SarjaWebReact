@@ -15,7 +15,7 @@ SarjaWeb/
 │   ├── player.py              # Pelaajan Flask -käyttöliittymän reitit
 │   ├── services.py            # Liiketoimintalogiikka (pistelasku, lohkojako)
 │   ├── static/                #
-│   │   ├── styles.css         # tyylimäärittelyt
+│   │   ├── styles.css         # Flaskin tyylimäärittelyt
 │   │   ├── admin_styles.css   # ylläpidon tyylimäärittelyt
 │   │   ├── hardcourt.jpg      # Admin taustakuva
 │   │   ├── tenniscourt.jpg    # Pelaajien taustakuva
@@ -31,23 +31,22 @@ SarjaWeb/
 │   │   ├── App.jsx            # Sovelluksen käynnistys
 │   │   ├── Esittely.jsx       # Yksittäiset React-komponentit
 │   │   ├── index.jsx          # Navigointipalkki
-│   │   ├── Login.jsx          # Sarjataulukon näyttö
+│   │   ├── Login.jsx          # Sisäänkirjautuminen
 │   │   ├── Logout.jsx         # Sarjataulukon näyttö
-│   │   ├── main.jsx           # Sarjataulukon näyttö
-│   │   ├── PlayerDetails.jsx  # Sarjataulukon näyttö
-│   │   ├── Register.jsx       # Sarjataulukon näyttö
+│   │   ├── PlayerDetails.jsx  # Pelaajien tiedot
+│   │   ├── Register.jsx       # Ilmoittautuminen sarjaan
 │   │   ├── Sarjataulukko.jsx  # Sarjataulukon näyttö
-│   │   ├── TuloksenTallennus.jsx  # Sarjataulukon näyttö
+│   │   ├── TuloksenTallennus.jsx  # Ottelutulosten tallennus
 │   │   └── favicon.ico        # Selaimen ikoni
-│   ├── static/          # Reactin yhteiset määritykset ja resurssit
+│   ├── static/                # Reactin yhteiset määritykset ja resurssit
 │   │   ├── hardcourt.jpg      # Taustakuva 1
 │   │   ├── tenniscourt.jpg    # Taustakuva 2
 │   │   ├── favicon.ico        # Selaimen ikoni
 │   │   └── styles.css         # Reactin tyylitiedosto
-│   └── package.json         # Reactin riippuvuuksien ja skriptien määrittely
+│   └── package.json           # Reactin riippuvuuksien ja skriptien määrittely
 │
-└── migrations/              # Flask-Migrate-tiedostot tietokannan hallintaa TBD
-    └── versions/            # Tietokantamuutosten versiot TBD
+└── migrations/                # Flask-Migrate-tiedostot tietokannan hallintaa TBD
+    └── versions/              # Tietokantamuutosten versiot TBD
 
 
 
