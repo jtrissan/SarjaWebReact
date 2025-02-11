@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Modal from 'react-modal';
 import './../static/styles.css';
 
 function TuloksenTallennus() {
@@ -12,6 +13,9 @@ function TuloksenTallennus() {
     const [samanLohkonPelaajat, setSamanLohkonPelaajat] = useState([]);
     const [errors, setErrors] = useState({});
     const navigate = useNavigate();
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [modalMessage, setModalMessage] = useState('');
+    const [modalType, setModalType] = useState('');
 
     useEffect(() => {
         fetch('http://localhost:5000/api/lohko_pelaajat', { method: 'GET', credentials: 'include' })
@@ -77,10 +81,19 @@ function TuloksenTallennus() {
         });
 
         if (response.ok) {
-            alert('Ottelutulos tallennettu onnistuneesti');
-            navigate('/sarjataulukko');
+            setModalMessage('Ottelutulos tallennettu onnistuneesti');
+            setModalType('success');
         } else {
-            alert('Ottelutuloksen tallennus epäonnistui');
+            setModalMessage('Ottelutuloksen tallennus epäonnistui');
+            setModalType('error');
+        }
+        setModalIsOpen(true);
+    };
+
+    const closeModal = () => {
+        setModalIsOpen(false);
+        if (modalType === 'success') {
+            navigate('/sarjataulukko');
         }
     };
 
@@ -135,6 +148,17 @@ function TuloksenTallennus() {
 
                 <button type="submit">Lähetä tulokset</button>
             </form>
+
+            <Modal
+                isOpen={modalIsOpen}
+                onRequestClose={closeModal}
+                contentLabel="Ilmoitus"
+                className="modal"
+                overlayClassName="overlay"
+            >
+                <h2>{modalMessage}</h2>
+                <button onClick={closeModal}>OK</button>
+            </Modal>
         </div>
     );
 }

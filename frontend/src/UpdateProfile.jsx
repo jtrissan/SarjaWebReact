@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Modal from 'react-modal';
 import './../static/styles.css';
 
 function UpdateProfile() {
@@ -12,6 +13,9 @@ function UpdateProfile() {
     const [password2, setPassword2] = useState('');
     const [errors, setErrors] = useState({});
     const navigate = useNavigate();
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [modalMessage, setModalMessage] = useState('');
+    const [modalType, setModalType] = useState('');
 
     useEffect(() => {
         fetch('http://localhost:5000/api/current_user', {
@@ -75,10 +79,19 @@ function UpdateProfile() {
         });
 
         if (response.ok) {
-            alert('Tiedot päivitetty onnistuneesti');
-            navigate('/');
+            setModalMessage('Tiedot päivitetty onnistuneesti');
+            setModalType('success');
         } else {
-            alert('Tietojen päivitys epäonnistui');
+            setModalMessage('Tietojen päivitys epäonnistui');
+            setModalType('error');
+        }
+        setModalIsOpen(true);
+    };
+
+    const closeModal = () => {
+        setModalIsOpen(false);
+        if (modalType === 'success') {
+            navigate('/');
         }
     };
 
@@ -192,6 +205,18 @@ function UpdateProfile() {
 
                 <button type="submit">Päivitä tiedot</button>
             </form>
+
+            <Modal
+                isOpen={modalIsOpen}
+                onRequestClose={closeModal}
+                contentLabel="Ilmoitus"
+                className="modal"
+                overlayClassName="overlay"
+            >
+                <h2>{modalMessage}</h2>
+                <button onClick={closeModal}>OK</button>
+            </Modal>
+            
         </div>
     );
 }

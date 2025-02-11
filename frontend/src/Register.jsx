@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Modal from 'react-modal';
 import './../static/styles.css';
 
 function Register() {
@@ -11,6 +12,9 @@ function Register() {
     const [password2, setPassword2] = useState('');
     const [errors, setErrors] = useState({});
     const navigate = useNavigate();
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [modalMessage, setModalMessage] = useState('');
+    const [modalType, setModalType] = useState('');
 
     const validateEmail = (email) => {
         return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -57,10 +61,19 @@ function Register() {
         });
 
         if (response.ok) {
-            alert('Rekisteröityminen onnistui');
-            navigate('/login');
+            setModalMessage('Rekisteröityminen onnistui');
+            setModalType('success');
         } else {
-            alert('Rekisteröityminen epäonnistui');
+            setModalMessage('Rekisteröityminen epäonnistui');
+            setModalType('error');
+        }
+        setModalIsOpen(true);
+    };
+
+    const closeModal = () => {
+        setModalIsOpen(false);
+        if (modalType === 'success') {
+            navigate('/login');
         }
     };
 
@@ -145,6 +158,18 @@ function Register() {
 
                 <button type="submit">Rekisteröidy</button>
             </form>
+            
+           <Modal
+                isOpen={modalIsOpen}
+                onRequestClose={closeModal}
+                contentLabel="Ilmoitus"
+                className="modal"
+                overlayClassName="overlay"
+            >
+                <h2>{modalMessage}</h2>
+                <button onClick={closeModal}>OK</button>
+            </Modal>
+            
         </div>
     );
 }

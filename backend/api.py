@@ -41,7 +41,7 @@ def update_profile():
     current_user.nimi = data['nimi']
     current_user.email = data['email']
     current_user.puhelin = data['puhelin']
-    current_user.aktiivinen = data['aktiivisuus'] == 'True'
+    current_user.aktiivinen = data['aktiivisuus']
     current_user.taso = data['taso']
     if data['password']:
         current_user.password = generate_password_hash(data['password'], method='pbkdf2:sha256')
@@ -126,10 +126,12 @@ def update_pelaaja(id):
     data = request.json
     pelaaja = Pelaaja.query.get(id)
     if pelaaja:
+        print(data)
         pelaaja.nimi = data['nimi']
         pelaaja.email = data['email']
-        pelaaja.taso = data['taso']
         pelaaja.puhelin = data['puhelin']
+        pelaaja.taso = data['taso']
+        pelaaja.aktiivinen = data['aktiivisuus']
         db.session.commit()
         return jsonify({'message': 'Pelaaja päivitetty'}), 200
     else:
