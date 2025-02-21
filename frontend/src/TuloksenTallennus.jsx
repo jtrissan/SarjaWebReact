@@ -4,6 +4,7 @@ import Modal from 'react-modal';
 import './../static/styles.css';
 
 function TuloksenTallennus() {
+    const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
     const [sarjakierrosId, setSarjakierrosId] = useState('');
     const [lohkoId, setLohkoId] = useState('');
     const [pelaaja1Id, setPelaaja1Id] = useState('');
@@ -18,14 +19,14 @@ function TuloksenTallennus() {
     const [modalType, setModalType] = useState('');
 
     useEffect(() => {
-        fetch('http://localhost:5000/api/lohko_pelaajat', { method: 'GET', credentials: 'include' })
+        fetch(`${API_URL}/lohko_pelaajat`, { method: 'GET', credentials: 'include' })
             .then(response => response.json())
             .then(data => {
                 setSarjakierrosId(data.sarjakierros_id);
                 setLohkoId(data.lohko_id);
                 setPelaaja1Id(data.pelaaja1_id);
                 setSamanLohkonPelaajat(data.saman_lohkon_pelaajat);
-                return fetch(`http://localhost:5000/api/hae_pelaaja/${data.pelaaja1_id}`, { method: 'GET', credentials: 'include' });
+                return fetch(`${API_URL}/hae_pelaaja/${data.pelaaja1_id}`, { method: 'GET', credentials: 'include' });
             })
             .then(response => response.json())
             .then(pelaajaData => setPelaaja1Nimi(pelaajaData.nimi))
@@ -67,7 +68,7 @@ function TuloksenTallennus() {
             return;
         }
 
-        const response = await fetch('http://localhost:5000/api/ottelut', {
+        const response = await fetch(`${API_URL}/ottelut`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include',

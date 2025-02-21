@@ -4,6 +4,7 @@ import Modal from 'react-modal';
 import './../static/styles.css';
 
 function UpdateProfile() {
+    const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
     const [nimi, setNimi] = useState('');
     const [email, setEmail] = useState('');
     const [puhelin, setPuhelin] = useState('');
@@ -18,7 +19,7 @@ function UpdateProfile() {
     const [modalType, setModalType] = useState('');
 
     useEffect(() => {
-        fetch('http://localhost:5000/api/current_user', {
+        fetch(`${API_URL}/current_user`, {
             credentials: 'include'
         })
             .then(response => response.json())
@@ -62,7 +63,7 @@ function UpdateProfile() {
             return;
         }
 
-        const response = await fetch('http://localhost:5000/api/update_profile', {
+        const response = await fetch(`${API_URL}/update_profile`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

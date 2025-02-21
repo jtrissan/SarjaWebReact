@@ -2,10 +2,11 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 function Logout({ setCurrentUser }) {
+    const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch('http://localhost:5000/api/logout', {
+        fetch(`${API_URL}/logout`, {
             method: 'POST',
             credentials: 'include'
         })

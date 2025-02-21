@@ -11,12 +11,14 @@ import Logout from './Logout';
 import PlayerDetails from './PlayerDetails';
 import UpdateProfile from './UpdateProfile';
 
-function App() {
-    const [currentUser, setCurrentUser] = useState({ isAuthenticated: false, admin: false });
 
+function App() {
+    const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+    //console.log(API_URL);
+    const [currentUser, setCurrentUser] = useState({ isAuthenticated: false, admin: false });
     useEffect(() => {
         // Hae käyttäjän tiedot backendistä
-        fetch('http://localhost:5000/api/current_user', {
+        fetch(`${API_URL}/current_user`, {
             credentials: 'include'
         })
             .then(response => response.json())

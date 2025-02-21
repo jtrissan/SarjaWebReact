@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import './../static/styles.css';
 
 function Login({ setCurrentUser }) {
+    const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
@@ -10,7 +11,7 @@ function Login({ setCurrentUser }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const response = await fetch('http://localhost:5000/api/login', {
+        const response = await fetch(`${API_URL}/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

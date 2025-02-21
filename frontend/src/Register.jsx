@@ -4,6 +4,7 @@ import Modal from 'react-modal';
 import './../static/styles.css';
 
 function Register() {
+    const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
     const [nimi, setNimi] = useState('');
     const [email, setEmail] = useState('');
     const [puhelin, setPuhelin] = useState('');
@@ -46,7 +47,7 @@ function Register() {
             return;
         }
 
-        const response = await fetch('http://localhost:5000/api/register', {
+        const response = await fetch(`${API_URL}/register`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import './../static/styles.css';
 
 function PlayerDetails() {
+    const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
     const { pelaajaId } = useParams();
     const [pelaaja, setPelaaja] = useState(null);
     const [ottelut, setOttelut] = useState([]);
@@ -10,7 +11,7 @@ function PlayerDetails() {
 
     useEffect(() => {
         // Hae pelaajan tiedot
-        fetch(`http://localhost:5000/api/hae_pelaaja/${pelaajaId}`, {
+        fetch(`${API_URL}/hae_pelaaja/${pelaajaId}`, {
             credentials: 'include'
         })
             .then(response => {
@@ -28,7 +29,7 @@ function PlayerDetails() {
             .catch(error => console.error('Error fetching player data:', error));
 
         // Hae pelaajan ottelut
-        fetch(`http://localhost:5000/api/hae_pelaajan_ottelut/${pelaajaId}`, {
+        fetch(`${API_URL}/hae_pelaajan_ottelut/${pelaajaId}`, {
             credentials: 'include'
         })
             .then(response => {

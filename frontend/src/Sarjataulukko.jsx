@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import './../static/styles.css';
 
 function Sarjataulukko() {
+    const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
     const [lohkot, setLohkot] = useState([]);
 
     useEffect(() => {
         // Hae data backendistä
-        fetch('http://localhost:5000/api/sarjataulukko', {
+        fetch(`${API_URL}/sarjataulukko`, {
             method: 'GET',
             credentials: 'include',  // Lisää tämä rivi
         })
