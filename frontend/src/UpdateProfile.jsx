@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Modal from 'react-modal';
-import './../static/styles.css';
 
-function UpdateProfile() {
-    const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+Modal.setAppElement('#root');
+
+function UpdateProfile( { API_URL } ) {
     const [nimi, setNimi] = useState('');
     const [email, setEmail] = useState('');
     const [puhelin, setPuhelin] = useState('');
@@ -24,14 +24,14 @@ function UpdateProfile() {
         })
             .then(response => response.json())
             .then(data => {
-                setNimi(data.nimi);
-                setEmail(data.email);
-                setPuhelin(data.puhelin);
-                setAktiivisuus(data.aktiivinen);
-                setTaso(data.taso);
+                setNimi(data.nimi || '');
+                setEmail(data.email || '');
+                setPuhelin(data.puhelin || '');
+                setAktiivisuus(data.aktiivinen !== undefined ? data.aktiivinen : true);
+                setTaso(data.taso || 'a');
             })
             .catch(error => console.error('Error fetching current user data:', error));
-    }, []);
+    }, [API_URL]);
 
     const validateEmail = (email) => {
         return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -217,7 +217,6 @@ function UpdateProfile() {
                 <h2>{modalMessage}</h2>
                 <button onClick={closeModal}>OK</button>
             </Modal>
-            
         </div>
     );
 }

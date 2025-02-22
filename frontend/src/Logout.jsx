@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function Logout({ setCurrentUser }) {
-    const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+function Logout({ setCurrentUser, API_URL }) {
     const navigate = useNavigate();
 
     useEffect(() => {

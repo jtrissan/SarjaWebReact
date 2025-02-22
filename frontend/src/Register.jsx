@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Modal from 'react-modal';
-import './../static/styles.css';
 
-function Register() {
-    const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+function Register( { API_URL } ) {
     const [nimi, setNimi] = useState('');
     const [email, setEmail] = useState('');
     const [puhelin, setPuhelin] = useState('');

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import './../static/styles.css';
-//import './index.css';
 import Esittely from './Esittely';
 import Sarjataulukko from './Sarjataulukko';
 import TuloksenTallennus from './TuloksenTallennus';
@@ -11,11 +10,10 @@ import Logout from './Logout';
 import PlayerDetails from './PlayerDetails';
 import UpdateProfile from './UpdateProfile';
 
-
 function App() {
-    const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
-    //console.log(API_URL);
+    const API_URL = "http://localhost:5000/api";
     const [currentUser, setCurrentUser] = useState({ isAuthenticated: false, admin: false });
+
     useEffect(() => {
         // Hae käyttäjän tiedot backendistä
         fetch(`${API_URL}/current_user`, {
@@ -28,7 +26,7 @@ function App() {
                 }
             })
             .catch(error => console.error('Error fetching current user data:', error));
-    }, []);
+    }, [API_URL]);
 
     return (
         <Router>
@@ -58,13 +56,13 @@ function App() {
             </div>
             <Routes>
                 <Route path="/" element={<Esittely />} />
-                <Route path="/sarjataulukko" element={<Sarjataulukko />} />
-                <Route path="/tuloksentallennus" element={<TuloksenTallennus />} />
-                <Route path="/update_profile" element={<UpdateProfile />} />
-                <Route path="/login" element={<Login setCurrentUser={setCurrentUser} />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/player/:pelaajaId" element={<PlayerDetails />} />
-                <Route path="/logout" element={<Logout setCurrentUser={setCurrentUser} />} />
+                <Route path="/sarjataulukko" element={<Sarjataulukko API_URL={API_URL} />} />
+                <Route path="/tuloksentallennus" element={<TuloksenTallennus API_URL={API_URL} />} />
+                <Route path="/update_profile" element={<UpdateProfile API_URL={API_URL} />} />
+                <Route path="/login" element={<Login API_URL={API_URL} setCurrentUser={setCurrentUser} />} />
+                <Route path="/register" element={<Register API_URL={API_URL} />} />
+                <Route path="/player/:pelaajaId" element={<PlayerDetails API_URL={API_URL} />} />
+                <Route path="/logout" element={<Logout API_URL={API_URL} setCurrentUser={setCurrentUser} />} />
             </Routes>
         </Router>
     );

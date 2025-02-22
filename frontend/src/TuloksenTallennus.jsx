@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Modal from 'react-modal';
-import './../static/styles.css';
 
-function TuloksenTallennus() {
-    const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+Modal.setAppElement('#root');
+
+function TuloksenTallennus( { API_URL } ) {
     const [sarjakierrosId, setSarjakierrosId] = useState('');
     const [lohkoId, setLohkoId] = useState('');
     const [pelaaja1Id, setPelaaja1Id] = useState('');
@@ -31,7 +31,7 @@ function TuloksenTallennus() {
             .then(response => response.json())
             .then(pelaajaData => setPelaaja1Nimi(pelaajaData.nimi))
             .catch(error => console.error('Error fetching data:', error));
-    }, []);
+    }, [API_URL]);
 
     const validateResults = () => {
         const newErrors = {};
