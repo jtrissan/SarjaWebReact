@@ -11,8 +11,10 @@ import PlayerDetails from './PlayerDetails';
 import UpdateProfile from './UpdateProfile';
 
 function App() {
-    const API_URL = "http://localhost:5000/api";
-    const FLASK_UI_URL = "http://localhost:5000";
+    const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+    const FLASK_UI_URL = import.meta.env.VITE_FLASK_UI_URL || "http://localhost:5000";
+    //const API_URL = "http://localhost:5000/api";
+    //const FLASK_UI_URL = "http://localhost:5000";
     const [currentUser, setCurrentUser] = useState({ isAuthenticated: false, admin: false });
 
     useEffect(() => {
