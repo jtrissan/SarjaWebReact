@@ -11,7 +11,8 @@ admin = Blueprint('admin', __name__)
 @admin.route('/')
 @login_required
 def admin_dashboard():
-    return render_template('admin.html')
+    react_app_url = current_app.config['REACT_APP_URL']
+    return render_template('admin.html', react_app_url=react_app_url)
 
 # Sarjataulukko
 @admin.route('/sarjataulukko')

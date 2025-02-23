@@ -25,6 +25,7 @@ def create_app():
     app.config['SECRET_KEY'] = environ.get('SECRET_KEY')
     app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('DATABASE_URL', f'sqlite:///{DB_NAME}')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.config['REACT_APP_URL'] = environ.get('REACT_APP_URL')
     #CORS(app, resources={r"/api/*": {"origins": "*"}}, supports_credentials=True)
     CORS(app, supports_credentials=True, origins=environ.get('CORS_ALLOWED_ORIGIN'))
     db.init_app(app)

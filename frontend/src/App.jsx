@@ -12,6 +12,7 @@ import UpdateProfile from './UpdateProfile';
 
 function App() {
     const API_URL = "http://localhost:5000/api";
+    const FLASK_UI_URL = "http://localhost:5000";
     const [currentUser, setCurrentUser] = useState({ isAuthenticated: false, admin: false });
 
     useEffect(() => {
@@ -51,7 +52,7 @@ function App() {
                     <Link to="/logout">Kirjaudu ulos</Link>
                 )}
                 {currentUser.isAuthenticated && currentUser.admin && (
-                    <a href="http://localhost:5000/admin">Ylläpito</a>
+                    <a href={`${FLASK_UI_URL}/admin`}>Ylläpito</a>
                 )}
             </div>
             <Routes>

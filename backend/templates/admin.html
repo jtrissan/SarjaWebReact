@@ -17,8 +17,8 @@
             {% if current_user.is_authenticated %}
                 <a href="{{ url_for('admin.lohkojako') }}">Uusi sarjakierros</a>
                 <a href="{{ url_for('admin.players') }}">Pelaajaluettelo</a>
-                <a href="http://localhost:5173/">Etusivu</a>
-                <!-- <a href="{{ url_for('player.index') }}">Etusivu</a> -->
+                <a href="{{ react_app_url }}">Etusivu - React</a>
+                <a href="{{ url_for('player.esittely') }}">Etusivu - Flask</a>
                 <a href="{{ url_for('auth.logout') }}">Logout</a>
             {% else %}
                 <a href="{{ url_for('auth.login') }}">Login</a>
