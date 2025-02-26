@@ -13,23 +13,41 @@ import UpdateProfile from './UpdateProfile';
 function App() {
     const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
     const FLASK_UI_URL = import.meta.env.VITE_FLASK_UI_URL || "http://localhost:5000";
-    //const API_URL = "http://localhost:5000/api";
-    //const FLASK_UI_URL = "http://localhost:5000";
     const [currentUser, setCurrentUser] = useState({ isAuthenticated: false, admin: false });
+    const [isPlayerInCurrentRound, setIsPlayerInCurrentRound] = useState(false);
 
     useEffect(() => {
         // Hae käyttäjän tiedot backendistä
         fetch(`${API_URL}/current_user`, {
             credentials: 'include'
         })
-            .then(response => response.json())
+            .then(response => {
+                if (response.headers.get('content-type')?.includes('application/json')) {
+                    return response.json();
+                } else {
+                    throw new Error('Vastaus ei ole JSON-muodossa');
+                }
+            })
             .then(data => {
                 if (data.isAuthenticated) {
                     setCurrentUser({ isAuthenticated: true, admin: data.admin });
+                    // Tarkista, onko pelaaja uusimmassa lohkojaossa
+                    return fetch(`${API_URL}/current_round_players`, {
+                        credentials: 'include'
+                    })
+                        .then(response => response.json())
+                        .then(players => {
+                            const isPlayerInCurrentRound = players.some(player => player.id === data.id);
+                            setIsPlayerInCurrentRound(isPlayerInCurrentRound);
+                            console.log('isPlayerInCurrentRound:', isPlayerInCurrentRound);
+                        });
+                } else {
+                    setCurrentUser({ isAuthenticated: false, admin: false });
+                    setIsPlayerInCurrentRound(false);
                 }
             })
             .catch(error => console.error('Error fetching current user data:', error));
-    }, [API_URL]);
+    }, [API_URL, setCurrentUser, setIsPlayerInCurrentRound]);
 
     return (
         <Router>
@@ -38,7 +56,7 @@ function App() {
                 {currentUser.isAuthenticated && (
                     <Link to="/sarjataulukko">Sarjataulukko</Link>
                 )}
-                {currentUser.isAuthenticated && (
+                {currentUser.isAuthenticated && isPlayerInCurrentRound && (
                     <Link to="/tuloksentallennus">Tuloksen tallennus</Link>
                 )}
                 {currentUser.isAuthenticated && (

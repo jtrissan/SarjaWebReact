@@ -22,6 +22,7 @@ def health_check():
 def current_user_route():
     if current_user.is_authenticated:
         return jsonify({
+            'id': current_user.id,
             'isAuthenticated': True,
             'admin': current_user.admin,
             'nimi': current_user.nimi,
@@ -32,6 +33,20 @@ def current_user_route():
         }), 200
     else:
         return jsonify({'isAuthenticated': False}), 200
+    
+# Hae meneillään olevan sarjakierroksen pelaajat
+@api.route('/current_round_players', methods=['GET'])
+@login_required
+def current_round_players():
+    # Hae meneillään oleva sarjakierros
+    current_round = Sarjakierros.query.order_by(Sarjakierros.id.desc()).first()
+    if not current_round:
+        return jsonify([])
+
+    # Hae pelaajat meneillään olevasta lohkojaosta
+    players = Pelaaja.query.join(LohkojenPelaajat).filter(LohkojenPelaajat.sarjakierros_id == current_round.id).all()
+    players_data = [{'id': player.id, 'nimi': player.nimi} for player in players]
+    return jsonify(players_data)
 
 # Päivitä käyttäjän tiedot
 @api.route('/update_profile', methods=['POST'])
