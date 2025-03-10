@@ -90,9 +90,9 @@ def update():
 
         pelaaja = current_user
         if len(email) < 4:
-            flash('Email must be greater than 3 characters.', category='error')
+            flash('Email must be longer than 3 characters.', category='error')
         elif len(nimi) < 2:
-            flash('Name must be greater than 1 character.', category='error')
+            flash('Name must be longer than 1 character.', category='error')
         elif password and len(password) < 7:
             flash('Password must be at least 7 characters.', category='error')
         else:

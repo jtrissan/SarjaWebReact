@@ -13,6 +13,8 @@ from os import path, environ
 from flask_login import LoginManager
 from flask_cors import CORS
 from dotenv import load_dotenv
+import logging
+from logging.handlers import RotatingFileHandler
 
 # Lataa ympäristömuuttujat .env-tiedostosta
 load_dotenv()
@@ -59,7 +61,7 @@ def create_app():
     def load_user(id):
         return Pelaaja.query.get(int(id))
 
-    print("TESTING! TESTING! TESTING!")
+    #configure_logging(app)
     print(app.url_map)
     return app
 
@@ -69,3 +71,13 @@ def create_database(app):
             db.create_all()
         print('Created Database!')
 
+def configure_logging(app):
+    if not app.debug:
+        # Configure logging
+        log_file = 'logs/backend.log'
+        log_handler = RotatingFileHandler(log_file, maxBytes=10240, backupCount=10)
+        log_handler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
+        log_handler.setLevel(logging.INFO)
+        app.logger.addHandler(log_handler)
+        app.logger.setLevel(logging.INFO)
+        app.logger.info('SarjaWebReact backend started!')

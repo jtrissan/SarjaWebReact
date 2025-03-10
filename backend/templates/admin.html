@@ -15,17 +15,18 @@
         <h1>Avoin Tennissarja - Ylläpito</h1>
         <div class="navbar">
             {% if current_user.is_authenticated %}
-                <a href="{{ url_for('admin.lohkojako') }}">Uusi sarjakierros</a>
                 <a href="{{ url_for('admin.players') }}">Pelaajaluettelo</a>
+                <a href="{{ url_for('admin.add_player') }}">Lisää pelaaja</a>
+                <a href="{{ url_for('admin.lohkojako') }}">Uusi sarjakierros</a>
                 <a href="{{ react_app_url }}">Etusivu - React</a>
-                <a href="{{ url_for('player.esittely') }}">Etusivu - Flask</a>
+                <a href="{{ url_for('player.index') }}">Etusivu - Flask</a>
                 <a href="{{ url_for('auth.logout') }}">Logout</a>
             {% else %}
                 <a href="{{ url_for('auth.login') }}">Login</a>
             {% endif %}
         </div>
     </div>
-
+{{ url_for('player.esittely') }}
     <!-- Pääsisältö -->
     <div id="content" style="margin-top: 130px;">
         {% block content %}
