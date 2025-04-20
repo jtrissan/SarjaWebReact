@@ -105,6 +105,7 @@ body {
         color: white;
         padding: 10px;
         text-align: center;
+        width: auto;
     }
     
     /* Taulukkumuotoiluja */
@@ -113,6 +114,57 @@ body {
         text-align: center;
         background-color: white;
         border: 1px solid #ddd;
+        width: auto;
+    }
+    
+    tbody tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+    /* Sarakkeiden leveydet merkkeinä */
+    /*
+    th:nth-child(1), td:nth-child(1) {
+        width: 30ch;
+    }
+    th:nth-child(2), td:nth-child(2) {
+        width: 7ch;
+    }
+    th:nth-child(3), td:nth-child(3) {
+         width: 7ch;
+    }
+    th:nth-child(4), td:nth-child(4) {
+           width: 16ch;
+    }
+    */
+}
+
+.containerST {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(213, 235, 43, 0.9); /* Tennispallon keltainen, hieman läpinäkyvä */
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 700px;
+    width: 100%;
+    margin: 15px auto;
+
+    thead th {
+        background-color: #4CAF50; /* Ruohon vihreä */
+        color: white;
+        padding: 10px;
+        text-align: center;
+        /*width: auto;*/
+    }
+    
+    /* Taulukkumuotoiluja */
+    tbody td {
+        padding: 8px;
+        text-align: center;
+        background-color: white;
+        border: 1px solid #ddd;
+        /*width: auto;*/
     }
     
     tbody tr:nth-child(even) {
@@ -120,16 +172,16 @@ body {
     }
     /* Sarakkeiden leveydet merkkeinä */
     th:nth-child(1), td:nth-child(1) {
-        width: 30ch; /* nimi */
+        width: 30ch;
     }
     th:nth-child(2), td:nth-child(2) {
-        width: 7ch; /* ottelut */
+        width: 7ch;
     }
     th:nth-child(3), td:nth-child(3) {
-         width: 7ch; /* pisteet */
+         width: 7ch;
     }
     th:nth-child(4), td:nth-child(4) {
-           width: 16ch; /* puhelinnumero */
+           width: 16ch;
     }
 }
 
@@ -266,11 +318,13 @@ table {
 @media (max-width: 600px) {
     thead th {
         font-size: 14px;
+        width: auto;
     }
 
     tbody td {
         font-size: 14px;
         padding: 5px;
+        width: auto;
     }
 
     h1 {
@@ -285,10 +339,12 @@ table {
 @media (max-width: 480px) {
     table {
         font-size: 12px;
+        width: auto;
     }
 
     tbody td {
         padding: 4px;
+        width: auto;
     }
 
     h1 {

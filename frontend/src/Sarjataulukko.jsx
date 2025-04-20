@@ -20,7 +20,7 @@ function Sarjataulukko( { API_URL } ) {
     }, []);
 
     return (
-        <div className="containerL">
+        <div className="containerST">
             <h1>Sarjataulukko</h1>
             {lohkot.length === 0 ? (
                 <p>Loading...</p>
